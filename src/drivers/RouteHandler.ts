@@ -22,6 +22,7 @@ import { REDIRECT_ROUTES } from '../environment/routes';
 import { User } from '@cyber4all/clark-entity';
 import * as request from 'request';
 import { generateToken } from './TokenManager';
+import { NotificationManager } from '../MessageService/NotificationManager';
 const version = require('../package.json').version;
 
 export default class RouteHandler {
@@ -41,7 +42,8 @@ export default class RouteHandler {
     dataStore: DataStore,
     hasher: HashInterface,
     mailer: Mailer,
-    responseFactory: UserResponseFactory
+    responseFactory: UserResponseFactory,
+    notificationManager: NotificationManager
   ) {
     const e = new RouteHandler(dataStore, hasher, mailer, responseFactory);
     const router: Router = express.Router();

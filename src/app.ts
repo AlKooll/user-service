@@ -6,12 +6,15 @@ import { UserResponseFactory } from './drivers/UserResponseFactory';
 import * as cookieParser from 'cookie-parser';
 import * as cors from 'cors';
 import { enforceTokenAccess } from './middleware/jwt.config';
+import { NotificationManager } from './MessageService/NotificationManager';
+import { MessageFacade } from './MessageService/MessageFacade';
 
 const mongoDriver = new MongoDriver();
 const sendgridDriver = new SendgridDriver();
 const bcryptDriver = new BcryptDriver(10);
 const app = ExpressDriver.start();
 const responseFactory = new UserResponseFactory();
+const notificationManager: NotificationManager = new MessageFacade(dataStore);
 
 app.use(cors({ origin: true, credentials: true }));
 app.use(cookieParser());
@@ -30,7 +33,8 @@ app.use(
     mongoDriver,
     bcryptDriver,
     sendgridDriver,
-    responseFactory
+    responseFactory,
+    notificationManager
   )
 );
 

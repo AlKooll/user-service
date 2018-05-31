@@ -6,6 +6,7 @@ import { DataStore } from '../interfaces/interfaces';
 import { User } from '@cyber4all/clark-entity';
 import * as dotenv from 'dotenv';
 import { OTACode } from './OTACodeManager';
+import { NotificationEvent } from '../MessageService/NotificationManager';
 dotenv.config();
 
 export interface Collection {
@@ -649,6 +650,10 @@ export default class MongoDriver implements DataStore {
     }
 
     return Promise.resolve(record);
+  }
+
+  addNotification(event: NotificationEvent, id: string): Promise<void> {
+    throw new Error('Method not implemented.');
   }
 }
 
