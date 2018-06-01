@@ -1,6 +1,7 @@
 import { User } from '@cyber4all/clark-entity';
 import { OTACode } from '../drivers/OTACodeManager';
-import { NotificationEvent } from '../MessageService/NotificationManager';
+import { NotificationEvent, Message } from '../MessageService/NotificationManager';
+import { fetchMessages, deleteMessage } from '../MessageService/MessageInteractor';
 
 export interface DataStore {
   connect(dbURI: string): Promise<void>;
@@ -23,5 +24,19 @@ export interface DataStore {
    * @returns {Promise<void>}
    * @memberof DataStore
    */
-  addNotification(event: NotificationEvent, id: string): Promise<void>;
+  addNotification(event: NotificationEvent, usernames: string[]): Promise<void>;
+  /**
+   * Fetches all messages for a user.
+   *
+   * @param {string} userId The unique identifier for the user.
+   * @memberof DataStore
+   */
+  fetchMessages(userId: string): Promise<Message[]>;
+  /**
+   * Deletes a message from the user.
+   *
+   * @param {string} messageId The unique identifier for the message to be deleted.
+   * @memberof DataStore
+   */
+  deleteMessage(userId: string, messageId: string): Promise<void>;
 }

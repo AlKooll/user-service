@@ -23,6 +23,7 @@ import { User } from '@cyber4all/clark-entity';
 import * as request from 'request';
 import { generateToken } from './TokenManager';
 import { NotificationManager } from '../MessageService/NotificationManager';
+import { sendMessageToSubscribers, sendMessageToAuthor, fetchMessages, deleteMessage } from '../MessageService/MessageInteractor';
 const version = require('../package.json').version;
 
 export default class RouteHandler {
@@ -124,7 +125,61 @@ export default class RouteHandler {
           responder.sendOperationError(e);
         }
       });
+    
+    router.post('/learning-objects/:username/:learningObjectName/messages', async (req, res) => {
+      // USER_SAVED_OBJECT
+      sendMessageToAuthor(
+        this.dataStore,
+        this.responseFactory.buildResponder(res),
+        req.params.username,
+        req.params.learningObjectName
+      );
+    });
+    router.post(
+      '/learning-objects/:username/:learningObjectName/subscribers/messages',
+      async (req, res) => {
+        // AUTHOR_UPDATED
+        sendMessageToSubscribers(
+          this.dataStore,
+          this.responseFactory.buildResponder(res),
+          req.body.usernames,
+          req.params.username,
+          req.params.learningObjectName
+        );
+      }
+    );
+    router.get('/users/:username/messages', async (req, res) => {
+      const userId = req.body.user.id;
+      if (req.params.username === req.body.user.username) {
+        try {
+          const messages = await fetchMessages(this.dataStore, userId);
+          res.status(200).json(messages);
+        } catch (e) {
+          console.error(e);
+          res.status(500).send('Error fetching messages');
+        }
+      } else {
+        res.status(401).send('Unauthorized');
+      }
+      
+    });
+    router.delete('/users/:username/messages/:id', async (req, res) => {
+      const messageId = req.params.id;
+      const userId = req.body.user.id;
+      const isAuthorized = req.params.username === req.body.user.username;
 
+      if (isAuthorized) {
+        try {
+          const messages = await deleteMessage(this.dataStore, userId, messageId);
+          res.status(200);
+        } catch (e) {
+          console.error(e);
+          res.status(500).send('Error deleting message');
+        }
+      } else {
+        res.status(401).send('Unauthorized');
+      }
+    });
     // Login
     router.post('/users/tokens', async (req, res) => {
       await login(

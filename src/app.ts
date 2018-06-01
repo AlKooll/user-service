@@ -14,7 +14,7 @@ const sendgridDriver = new SendgridDriver();
 const bcryptDriver = new BcryptDriver(10);
 const app = ExpressDriver.start();
 const responseFactory = new UserResponseFactory();
-const notificationManager: NotificationManager = new MessageFacade(dataStore);
+const notificationManager: NotificationManager = new MessageFacade(mongoDriver);
 
 app.use(cors({ origin: true, credentials: true }));
 app.use(cookieParser());
