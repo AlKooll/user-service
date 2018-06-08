@@ -21,10 +21,14 @@ import { ACCOUNT_ACTIONS } from '../interfaces/Mailer.defaults';
 import { REDIRECT_ROUTES } from '../environment/routes';
 import { User } from '@cyber4all/clark-entity';
 import * as request from 'request';
-import { generateToken } from './TokenManager';
+import { generateToken, generateServiceToken } from './TokenManager';
 import { NotificationManager } from '../MessageService/NotificationManager';
 import { sendMessageToSubscribers, sendMessageToAuthor, fetchMessages, deleteMessage } from '../MessageService/MessageInteractor';
 const version = require('../package.json').version;
+import axios, { AxiosRequestConfig, AxiosPromise } from 'axios';
+import * as dotenv from 'dotenv';
+
+dotenv.config();
 
 export default class RouteHandler {
   constructor(
@@ -139,13 +143,19 @@ export default class RouteHandler {
       '/learning-objects/:username/:learningObjectName/subscribers/messages',
       async (req, res) => {
         // AUTHOR_UPDATED
-        sendMessageToSubscribers(
-          this.dataStore,
-          this.responseFactory.buildResponder(res),
-          req.body.usernames,
-          req.params.username,
-          req.params.learningObjectName
-        );
+        try {
+          const usernames = await fetchSubscribers(req.body.id);
+          sendMessageToSubscribers(
+            this.dataStore,
+            this.responseFactory.buildResponder(res),
+            usernames,
+            req.params.username,
+            req.params.learningObjectName
+          );
+        } catch (e) {
+          // TODO: handle errors
+          console.error(e);
+        }
       }
     );
     router.get('/users/:username/messages', async (req, res) => {
@@ -370,4 +380,19 @@ export default class RouteHandler {
       }
     });
   }
+}
+
+/**
+ * Gets the usernames of the learning object's subscribers.
+ * 
+ * @param id a learning object id
+ */
+async function fetchSubscribers(id: string) {
+  return (
+    await axios.get(`${process.env.CART_SERVICE_URI}/users/cart/learning-objects/${id}`, {
+      headers: {
+        Authorization: `Bearer ${generateServiceToken()}`
+      }
+    })
+  ).data.recipients as string[];
 }
