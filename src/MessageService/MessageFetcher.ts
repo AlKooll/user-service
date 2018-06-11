@@ -1,5 +1,5 @@
 import { DataStore } from '../interfaces/DataStore';
-import { Message } from './NotificationManager';
+import { Notification } from './NotificationManager';
 
 export class MessageFetcher {
   constructor(private dataStore: DataStore) { }
@@ -8,7 +8,7 @@ export class MessageFetcher {
 
     return true;
   }
-  fetchUnread({ userId }: { userId: string; }): Message[] {
+  fetchUnread({ userId }: { userId: string; }): Notification[] {
 
     return [{ text: 'My message', date: 9182349816 }];
   }

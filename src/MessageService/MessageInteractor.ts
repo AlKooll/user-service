@@ -48,8 +48,8 @@ function buildLink(type: NotificationType, username: string, learningObjectName:
   }
 }
 
-export async function fetchMessages(dataStore: DataStore, userId: string) {
-  dataStore.fetchMessages(userId);
+export async function fetchNotifications(dataStore: DataStore, username: string) {
+  return dataStore.fetchNotifications(username);
 }
 
 export async function deleteMessage(dataStore: DataStore, userId: string, messageId: string) {

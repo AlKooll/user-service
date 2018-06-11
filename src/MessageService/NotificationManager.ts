@@ -3,7 +3,7 @@ import { LearningObject } from '@cyber4all/clark-entity';
 
 export interface NotificationManager {
   registerEvent(event: NotificationEvent, object: LearningObject): void;
-  fetchUnread({ userId }: { userId: any; }): Message[];
+  fetchUnread({ userId }: { userId: any; }): Notification[];
   hasUnread({ userId }: { userId: any; }): boolean;
 }
 
@@ -20,7 +20,7 @@ export interface NotificationEvent {
   };
 }
 
-export interface Message {
+export interface Notification {
   text: string;
   date: number;
   link?: string;

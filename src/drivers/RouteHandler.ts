@@ -23,7 +23,7 @@ import { User } from '@cyber4all/clark-entity';
 import * as request from 'request';
 import { generateToken, generateServiceToken } from './TokenManager';
 import { NotificationManager } from '../MessageService/NotificationManager';
-import { sendMessageToSubscribers, sendMessageToAuthor, fetchMessages, deleteMessage } from '../MessageService/MessageInteractor';
+import { sendMessageToSubscribers, sendMessageToAuthor, fetchNotifications, deleteMessage } from '../MessageService/MessageInteractor';
 const version = require('../package.json').version;
 import axios, { AxiosRequestConfig, AxiosPromise } from 'axios';
 import * as dotenv from 'dotenv';
@@ -158,12 +158,13 @@ export default class RouteHandler {
         }
       }
     );
-    router.get('/users/:username/messages', async (req, res) => {
-      const userId = req.body.user.id;
-      if (req.params.username === req.body.user.username) {
+    router.get('/users/:username/notifications', async (req, res) => {
+      // TODO: check if this should be req.user.id or if it is in fact posted in the body
+      const username = req.user.username;
+      if (req.params.username === req.user.username) {
         try {
-          const messages = await fetchMessages(this.dataStore, userId);
-          res.status(200).json(messages);
+          const notifications = await fetchNotifications(this.dataStore, username);
+          res.status(200).json({ notifications });
         } catch (e) {
           console.error(e);
           res.status(500).send('Error fetching messages');

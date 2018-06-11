@@ -6,8 +6,8 @@ import { DataStore } from '../interfaces/interfaces';
 import { User } from '@cyber4all/clark-entity';
 import * as dotenv from 'dotenv';
 import { OTACode } from './OTACodeManager';
-import { NotificationEvent, Message } from '../MessageService/NotificationManager';
-import { MessageStore } from '../MessageService/MessageStore';
+import { NotificationEvent, Notification } from '../MessageService/NotificationManager';
+import { NotificationStore } from '../MessageService/NotificationStore';
 dotenv.config();
 
 export interface Collection {
@@ -92,7 +92,7 @@ COLLECTIONS_MAP.set('OTACode', COLLECTIONS.OTACode);
 
 export default class MongoDriver implements DataStore {
   private db: Db;
-  private messageStore: MessageStore;
+  private messageStore: NotificationStore;
 
   constructor() {
     const dburi =
@@ -129,7 +129,7 @@ export default class MongoDriver implements DataStore {
   async connect(dbURI: string, retryAttempt?: number): Promise<void> {
     try {
       this.db = await MongoClient.connect(dbURI);
-      this.messageStore = new MessageStore(this.db);
+      this.messageStore = new NotificationStore(this.db);
     } catch (e) {
       if (!retryAttempt) {
         this.connect(dbURI, 1);
@@ -657,21 +657,21 @@ export default class MongoDriver implements DataStore {
 
   async addNotification(event: NotificationEvent, usernames: string[]): Promise<void> {
     try {
-      await this.messageStore.pushMessageToUsers(COLLECTIONS.User.name, event, usernames);
+      await this.messageStore.pushNotificationToUsers(COLLECTIONS.User.name, event, usernames);
     } catch (e) {
       return Promise.reject(e);
     }
   }
-  fetchMessages(userId: string): Promise<Message[]> {
+  fetchNotifications(username: string): Promise<Notification[]> {
     try {
-      return this.messageStore.fetchMessages(COLLECTIONS.User.name, userId);
+      return this.messageStore.fetchNotifications(COLLECTIONS.User.name, username);
     } catch (e) {
       return Promise.reject(e);
     }
   }
-  deleteMessage(userId: string, messageId: string): Promise<void> {
+  deleteMessage(userId: string, notificationId: string): Promise<void> {
     try {
-      this.messageStore.deleteMessage(COLLECTIONS.User.name, userId, messageId);
+      this.messageStore.deleteNotification(COLLECTIONS.User.name, userId, notificationId);
     } catch (e) {
       return Promise.reject(e);
     }
