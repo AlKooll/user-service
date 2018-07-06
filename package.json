@@ -1,16 +1,20 @@
 {
   "name": "user-service",
   "version": "1.0.1",
-  "description": "A microservice for handling user account actions in the CLARK platform.",
+  "description":
+    "A microservice for handling user account actions in the CLARK platform.",
   "main": "app.js",
   "scripts": {
     "start": "npm run gulp-tsc",
     "build": "node_modules/.bin/gulp tsc",
     "gulp-tsc": "node_modules/.bin/gulp start",
     "lint": "node_modules/.bin/tslint --project ./src/**",
-    "pack": "npm run build && cp ./package.json ./dist && cd ./dist && zip -r ../dist.zip  ./* & cd ..",
-    "zip": "cp ./package.json ./dist && cd ./dist && zip -r ../dist.zip  ./* & cd ..",
-    "deploy": "eb deploy User-Service-Production --profile clark --label $(node -p \"require('./package.json').version\")",
+    "pack":
+      "npm run build && cp ./package.json ./dist && cd ./dist && zip -r ../dist.zip  ./* & cd ..",
+    "zip":
+      "cp ./package.json ./dist && cd ./dist && zip -r ../dist.zip  ./* & cd ..",
+    "deploy":
+      "eb deploy User-Service-Production --profile clark --label $(node -p \"require('./package.json').version\")",
     "prettify": "node_modules/.bin/prettier --write ./src/**/* --single-quote",
     "test": "node_modules/.bin/jest --verbose  --coverage"
   },
@@ -47,6 +51,7 @@
     "request-promise": "^4.2.2"
   },
   "devDependencies": {
+    "@types/axios": "^0.14.0",
     "@types/bcrypt": "^1.0.0",
     "@types/cookie-parser": "^1.4.1",
     "@types/cors": "^2.8.3",
@@ -56,12 +61,16 @@
     "@types/jest": "^22.2.2",
     "@types/jsonwebtoken": "^7.2.5",
     "@types/mongodb": "^2.2.13",
+    "@types/morgan": "^1.7.35",
     "@types/node": "^9.3.0",
+    "@types/request-promise": "^4.1.41",
+    "axios": "^0.18.0",
     "gulp": "^3.9.1",
     "gulp-nodemon": "^2.2.1",
     "gulp-typescript": "^4.0.0-alpha.1",
     "jest": "^22.4.3",
     "prettier": "1.10.2",
+    "request-promise": "^4.2.2",
     "ts-jest": "^22.4.2",
     "tslint": "^5.9.1",
     "tslint-config-airbnb": "^5.7.0",
@@ -72,10 +81,7 @@
       "\\.(ts|tsx)$": "<rootDir>/node_modules/ts-jest/preprocessor.js"
     },
     "testRegex": ".*?(?=.spec).*?.(js)",
-    "moduleFileExtensions": [
-      "ts",
-      "js"
-    ]
+    "moduleFileExtensions": ["ts", "js"]
   },
   "prettier": {
     "singleQuote": true

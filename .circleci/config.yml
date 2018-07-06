@@ -32,7 +32,12 @@ jobs:
       - run:
           name: Copy package.json
           command: cp ./package.json ./dist
-      - run: npm test
+      - run:
+          name: Start Server
+          command: node ./dist/app.js&
+      - run:
+          name: Run tests
+          command: npm test
   deploy:
     working_directory: ~/user-service
     docker: *ref_0
