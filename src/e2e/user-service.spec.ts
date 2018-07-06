@@ -28,7 +28,6 @@ switch (process.env.NODE_ENV) {
     API_URI = process.env.USERS_API_DEV;
     break;
 }
-console.log('API', API_URI);
 const DEFAULT_REQUEST_OPTIONS: AxiosRequestConfig = {
   baseURL: API_URI
 };
