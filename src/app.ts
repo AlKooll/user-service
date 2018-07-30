@@ -1,4 +1,5 @@
 import { ExpressDriver } from '@oriented/express';
+import { Request, Response } from 'express';
 import RouteHandler from './drivers/RouteHandler';
 import AuthRouteHandler from './drivers/AuthRouteHandler';
 import AdminRouteHandler from './drivers/AdminRouteHandler';
@@ -12,6 +13,7 @@ import { enforceAdminAccess } from './middleware/admin-access';
 import * as logger from 'morgan';
 import * as dotenv from 'dotenv';
 dotenv.config();
+const version = require('./package.json').version;
 
 let dburi;
 switch (process.env.NODE_ENV) {
@@ -49,9 +51,20 @@ app.use(logger('dev'));
 app.use(cors({ origin: true, credentials: true }));
 app.use(cookieParser());
 
+const API_BASE_ROUTE = 'users';
+
+// GET: returns welcome message and version number
+// No params necessary
+app.get('/', (_: Request, res: Response) => {
+  res.json({
+    version,
+    message: `Welcome to the Users API v${version}`
+  });
+});
+
 // Set unauthenticated api routes
 app.use(
-  '/',
+  `/${API_BASE_ROUTE}`,
   RouteHandler.buildRouter(
     dataStore,
     bcryptDriver,
@@ -69,7 +82,7 @@ app.use((error: any, req: any, res: any, next: any) => {
 });
 // Set authenticated api routes
 app.use(
-  '/',
+  `/${API_BASE_ROUTE}`,
   AuthRouteHandler.buildRouter(dataStore, bcryptDriver, responseFactory)
 );
 
@@ -79,7 +92,7 @@ app.use(
 app.use(enforceAdminAccess);
 
 app.use(
-  '/admin',
+  `/${API_BASE_ROUTE}/admin`,
   AdminRouteHandler.buildRouter(dataStore, sendgridDriver, responseFactory)
 );
 

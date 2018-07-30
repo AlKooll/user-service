@@ -40,15 +40,6 @@ export default class RouteHandler {
   }
 
   private setRoutes(router: Router) {
-    // GET: returns welcome message and version number
-    // No params necessary
-    router.get('/', (req, res) => {
-      res.json({
-        version,
-        message: `Welcome to the Users API v${version}`
-      });
-    });
-
     // Register
     // POST: provide JSON object with new user info
     /*
@@ -63,7 +54,7 @@ export default class RouteHandler {
     */
     // Returns either message warning invalid info, or success
     router
-      .route('/users')
+      .route('/')
       .get(async (req, res) => {
         const responder = this.responseFactory.buildResponder(res);
         try {
@@ -106,7 +97,7 @@ export default class RouteHandler {
       });
 
     // Get user information
-    router.get('/users/update', async (req, res) => {
+    router.get('/update', async (req, res) => {
       try {
         const query = req.query.username;
         const user = await UserInteractor.loadUser(this.dataStore, query);
@@ -117,7 +108,7 @@ export default class RouteHandler {
     });
 
     // Login
-    router.post('/users/tokens', async (req, res) => {
+    router.post('/tokens', async (req, res) => {
       const responder = this.responseFactory.buildResponder(res);
       try {
         const user = await login(
@@ -137,7 +128,7 @@ export default class RouteHandler {
       }
     });
 
-    router.get('/users/:username/profile', async (req, res) => {
+    router.get('/:username/profile', async (req, res) => {
       const responder = this.responseFactory.buildResponder(res);
       try {
         const user = await UserInteractor.loadUser(
@@ -150,7 +141,7 @@ export default class RouteHandler {
       }
     });
 
-    router.route('/users/organizations').get(async (req, res) => {
+    router.route('/organizations').get(async (req, res) => {
       const responder = this.responseFactory.buildResponder(res);
       try {
         const orgs = await UserInteractor.findOrganizations(
@@ -163,7 +154,7 @@ export default class RouteHandler {
       }
     });
 
-    router.route('/users/identifiers/active').get(async (req, res) => {
+    router.route('/identifiers/active').get(async (req, res) => {
       const responder = this.responseFactory.buildResponder(res);
       try {
         const inUse = await UserInteractor.identifierInUse(
@@ -177,7 +168,7 @@ export default class RouteHandler {
     });
 
     router
-      .route('/users/ota-codes')
+      .route('/ota-codes')
       .post(async (req, res) => {
         try {
           const action = req.query.action;

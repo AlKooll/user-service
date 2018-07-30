@@ -43,7 +43,7 @@ export default class AuthRouteHandler {
         }
         */
     // Returns either message warning invalid info, or success
-    router.route('/users').patch(async (req, res) => {
+    router.route('/').patch(async (req, res) => {
       const responder = this.responseFactory.buildResponder(res);
       try {
         if (req.body.user) {
@@ -61,7 +61,7 @@ export default class AuthRouteHandler {
       }
     });
 
-    router.route('/users/password').get(async (req, res) => {
+    router.route('/password').get(async (req, res) => {
       const responder = this.responseFactory.buildResponder(res);
       try {
         const match = await passwordMatch(
@@ -77,7 +77,7 @@ export default class AuthRouteHandler {
     });
 
     router
-      .route('/users/tokens')
+      .route('/tokens')
       // Validate Token
       // Param: Valid token (for testing, get from users/tokens route)
       // if valid, returns OK
@@ -92,7 +92,7 @@ export default class AuthRouteHandler {
       });
 
     // refresh token
-    router.get('/users/tokens/refresh', async (req, res) => {
+    router.get('/tokens/refresh', async (req, res) => {
       const responder = this.responseFactory.buildResponder(res);
       try {
         const user = await UserInteractor.loadUser(
@@ -112,7 +112,7 @@ export default class AuthRouteHandler {
       }
     });
 
-    router.delete('/users/:username/tokens', async (req, res) => {
+    router.delete('/:username/tokens', async (req, res) => {
       const responder = this.responseFactory.buildResponder(res);
       const username = req.params.username;
       const user = req.user;
@@ -124,7 +124,7 @@ export default class AuthRouteHandler {
       }
     });
 
-    router.delete('/users/:username/account', async (req, res) => {
+    router.delete('/:username/account', async (req, res) => {
       const responder = this.responseFactory.buildResponder(res);
       try {
         const user = req.user;
