@@ -40,19 +40,6 @@ export default class RouteHandler {
   }
 
   private setRoutes(router: Router) {
-    // Register
-    // POST: provide JSON object with new user info
-    /*
-    {
-      "username": "string", 
-      "firstname": "string", 
-      "lastname": "string", 
-      "email": "string", 
-      "password": "string",
-      organization: string
-    }
-    */
-    // Returns either message warning invalid info, or success
     router
       .route('/')
       .get(async (req, res) => {
@@ -65,7 +52,19 @@ export default class RouteHandler {
           responder.sendOperationError(e);
         }
       })
-      // register
+      // Register
+      // POST: provide JSON object with new user info
+      /*
+    {
+      "username": "string", 
+      "firstname": "string", 
+      "lastname": "string", 
+      "email": "string", 
+      "password": "string",
+      organization: string
+    }
+    */
+      // Returns either message warning invalid info, or success
       .post(async (req, res) => {
         const responder = this.responseFactory.buildResponder(res);
         const user = User.instantiate(req.body);

@@ -30,7 +30,6 @@ export default class AuthRouteHandler {
   }
 
   private setRoutes(router: Router) {
-    // Returns either message warning invalid info, or success
     router.route('/').patch(async (req, res) => {
       const responder = this.responseFactory.buildResponder(res);
       try {
@@ -63,13 +62,8 @@ export default class AuthRouteHandler {
         responder.sendOperationError(e);
       }
     });
-
     router
-      .route('/tokens')
-      // Validate Token
-      // Param: Valid token (for testing, get from users/tokens route)
-      // if valid, returns OK
-      // else, returns "INVALID TOKEN"
+      .route('/:username/tokens')
       .get(async (req, res) => {
         const responder = this.responseFactory.buildResponder(res);
         try {
@@ -77,10 +71,21 @@ export default class AuthRouteHandler {
         } catch (e) {
           responder.sendOperationError('Invalid token');
         }
+      })
+      .delete(async (req, res) => {
+        const responder = this.responseFactory.buildResponder(res);
+        const username = req.params.username;
+        const user = req.user;
+        if (this.hasAccess(user, 'username', username)) {
+          responder.removeCookie('presence');
+          responder.sendOperationSuccess();
+        } else {
+          responder.unauthorized();
+        }
       });
 
     // refresh token
-    router.get('/tokens/refresh', async (req, res) => {
+    router.get('/:username/tokens/refresh', async (req, res) => {
       const responder = this.responseFactory.buildResponder(res);
       try {
         const user = await UserInteractor.loadUser(
@@ -97,18 +102,6 @@ export default class AuthRouteHandler {
         }
       } catch (error) {
         responder.sendOperationError(`Error refreshing token ${error}`);
-      }
-    });
-
-    router.delete('/:username/tokens', async (req, res) => {
-      const responder = this.responseFactory.buildResponder(res);
-      const username = req.params.username;
-      const user = req.user;
-      if (this.hasAccess(user, 'username', username)) {
-        responder.removeCookie('presence');
-        responder.sendOperationSuccess();
-      } else {
-        responder.unauthorized();
       }
     });
 
