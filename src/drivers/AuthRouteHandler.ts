@@ -30,18 +30,6 @@ export default class AuthRouteHandler {
   }
 
   private setRoutes(router: Router) {
-    // Register
-    // POST: provide JSON object with new user info
-    /*
-        {
-          "username": "string", 
-          "firstname": "string", 
-          "lastname": "string", 
-          "email": "string", 
-          "password": "string",
-          organization: string
-        }
-        */
     // Returns either message warning invalid info, or success
     router.route('/').patch(async (req, res) => {
       const responder = this.responseFactory.buildResponder(res);
