@@ -92,7 +92,7 @@ app.use(
 app.use(enforceAdminAccess);
 
 app.use(
-  `/${API_BASE_ROUTE}/admin`,
+  `/admin/${API_BASE_ROUTE}`,
   AdminRouteHandler.buildRouter(dataStore, sendgridDriver, responseFactory)
 );
 

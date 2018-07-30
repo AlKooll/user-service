@@ -33,7 +33,7 @@ export default class AdminRouteHandler {
     // No params necessary
 
     // User Routes
-    router.get('/users', async (req, res) => {
+    router.get('/', async (req, res) => {
       const responder = this.responseFactory.buildResponder(res);
       try {
         const query = req.query;
@@ -46,7 +46,7 @@ export default class AdminRouteHandler {
         responder.sendOperationError(e);
       }
     });
-    router.delete('/users/:id', async (req, res) => {
+    router.delete('/:id', async (req, res) => {
       const responder = this.responseFactory.buildResponder(res);
       try {
         const id = req.params.id;
@@ -58,7 +58,7 @@ export default class AdminRouteHandler {
     });
 
     // Mailer Routes
-    router.post('/mail', async (req, res) => {
+    router.post('/mailer', async (req, res) => {
       const responder = this.responseFactory.buildResponder(res);
       try {
         const subject = req.body.subject;
@@ -75,7 +75,7 @@ export default class AdminRouteHandler {
       }
     });
     router
-      .route('/mail/templates')
+      .route('/mailer/templates')
       .get(async (req, res) => {
         const responder = this.responseFactory.buildResponder(res);
         try {
