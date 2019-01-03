@@ -5,8 +5,13 @@ import { DataStore } from '../interfaces/DataStore';
 /**
  * Initializes an express router with endpoints to get stats for a User
  */
-export function initialize({ dataStore }: { dataStore: DataStore }) {
-  const router: Router = Router();
+export function initialize({
+  router,
+  dataStore
+}: {
+  router: Router;
+  dataStore: DataStore;
+}) {
   const getStats = async (req: Request, res: Response) => {
     try {
       const query = req.query;
@@ -22,6 +27,5 @@ export function initialize({ dataStore }: { dataStore: DataStore }) {
     }
   };
 
-  router.get(getStats);
-  return router;
+  router.get('/users/stats', getStats);
 }

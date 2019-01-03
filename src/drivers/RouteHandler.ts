@@ -297,9 +297,6 @@ export default class RouteHandler {
       }
     });
 
-    router.use(
-      '/users/stats',
-      UserStatsRouteHandler.initialize({ dataStore: this.dataStore })
-    );
+    UserStatsRouteHandler.initialize({ router, dataStore: this.dataStore });
   }
 }
