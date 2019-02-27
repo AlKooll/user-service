@@ -148,5 +148,11 @@ describe('AuthenticationInteractor', () => {
     it('should pass for usernames with exactly 20 characters', () => {
       expect(isValidUsername(MOCK_OBJECTS.VALID_MAX_LENGTH_USERNAME)).to.be.true;
     });
+    it('should identify token as an invalid username', () => {
+      expect(isValidUsername('token')).to.be.false;
+    });
+    it('should identify tokens as an invalid username', () => {
+      expect(isValidUsername('tokens')).to.be.false;
+    });
   });
 });
