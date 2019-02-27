@@ -8,5 +8,12 @@ module.exports = {
     "tsx",
     "js",
     "jsx"
-  ]
+  ],
+  globals: {
+    'ts-jest': {
+      diagnostics: {
+        warnOnly: true
+      }
+    }
+  },
 };
