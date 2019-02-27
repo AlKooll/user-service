@@ -164,5 +164,8 @@ function sanitizeUser(user: AuthUser): AuthUser {
  * @returns {boolean} whether or not the username is valid.
  */
 export function isValidUsername(username: string): boolean {
-  return username.length <= 20 && username.length >= 3;
+  return (
+    username.length <= 20 && username.length >= 3
+    && username !== 'token' && username !== 'tokens'
+  );
 }
