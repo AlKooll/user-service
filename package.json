@@ -61,7 +61,7 @@
     "@types/mongodb": "^3.1.18",
     "@types/morgan": "^1.7.35",
     "@types/node": "^10.5.2",
-    "@types/supertest": "^2.0.7",
+    "@types/supertest": "2.0.7",
     "chai": "^4.1.2",
     "chai-http": "^4.0.0",
     "danger": "^6.0.2",
