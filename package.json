@@ -63,7 +63,7 @@
     "@types/jsonwebtoken": "^7.2.5",
     "@types/mongodb": "^3.1.18",
     "@types/morgan": "^1.7.35",
-    "@types/node": "^10.5.2",
+    "@types/node": "^12.12.3",
     "@types/supertest": "^2.0.7",
     "danger": "^6.0.2",
     "gulp": "^3.9.1",
