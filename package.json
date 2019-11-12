@@ -65,7 +65,7 @@
     "@types/morgan": "^1.7.35",
     "@types/node": "^10.5.2",
     "@types/supertest": "^2.0.7",
-    "danger": "^6.0.2",
+    "danger": "^9.2.7",
     "gulp": "^3.9.1",
     "gulp-nodemon": "^2.2.1",
     "gulp-typescript": "^4.0.0-alpha.1",
